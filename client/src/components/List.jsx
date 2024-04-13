@@ -1,23 +1,13 @@
 import { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
+import DeleteButton from './DeleteButton';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const List = ({ products, setProducts }) => {
 
-    const deleteOne = (productId) => {
-        axios.delete(`http://localhost:8000/api/products/${productId}`)
-            .then(res => {
-                Swal.fire({
-                    icon: "success",
-                    title: "Eliminado",
-                    text: "Eliminaste un nuevo Producto!"                });
-                    setProducts(products.filter(product => product._id !== productId))
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
+    const deleteProduct = (productId) => {
+        setProducts(products.filter(product => product._id !== productId));
+    };
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -58,7 +48,7 @@ const List = ({ products, setProducts }) => {
                                     <div className="ml-auto">
                                         <Link className="btn btn-warning m-2" to={`/products/${product._id}`}>Ver producto</Link>
                                         <Link className="btn btn-warning m-2" to={`/products/${product._id}/update`}>Actualizar producto</Link>
-                                        <button className="btn btn-danger m-2" onClick={() => deleteOne(product._id)}>Eliminar Producto</button>
+                                        <DeleteButton productId={product._id} onDelete={deleteProduct} />
                                     </div>
                                 </div>
                             </div>
